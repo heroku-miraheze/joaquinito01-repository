@@ -12,17 +12,17 @@ jobs:
       - uses: addnab/docker-run-action@v3
         with:
           image: ustcmirror/rsync:latest
-          options: -v ${{ github.workspace }}/repo/22.05/community:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/community
+          options: -v ${{ github.workspace }}/repo/22.05/community:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=/archlinux/community
           run: "entry.sh"
       - uses: addnab/docker-run-action@v3
         with:
           image: ustcmirror/rsync:latest
-          options: -v ${{ github.workspace }}/repo/22.05/core:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/core
+          options: -v ${{ github.workspace }}/repo/22.05/core:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=/archlinux/core
           run: "entry.sh"
       - uses: addnab/docker-run-action@v3
         with:
           image: ustcmirror/rsync:latest
-          options: -v ${{ github.workspace }}/repo/22.05/extra:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/extra
+          options: -v ${{ github.workspace }}/repo/22.05/extra:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=/archlinux/extra
           run: "entry.sh"
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
