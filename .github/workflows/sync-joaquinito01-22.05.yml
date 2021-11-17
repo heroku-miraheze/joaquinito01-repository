@@ -12,7 +12,7 @@ jobs:
       - uses: addnab/docker-run-action@v3
         with:
           image: ustcmirror/rsync:latest
-          options: -v ${{ github.workspace }}/repo/22.05:/data -e RSYNC_HOST=rsync://mirror.pkgbuild.com/ -e RSYNC_PATH=packages
+          options: -v ${{ github.workspace }}/repo/22.05:/data -e RSYNC_HOST=rsync://mirror.pkgbuild.com/packages
           run: "entry.sh"
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
