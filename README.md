@@ -1,2 +1,2 @@
 # joaquinito01-repository
-Debian's distribution, releases every 6 months.
+Arch Linux's distribution, releases every 6 months.
