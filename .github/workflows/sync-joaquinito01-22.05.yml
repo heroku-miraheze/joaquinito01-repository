@@ -1,0 +1,29 @@
+name: sync
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2 # Required to mount the Github Workspace to a volume 
+      - uses: addnab/docker-run-action@v3
+        registry: registry-1.docker.io
+        image: ustcmirror/apt-sync
+        options: -v ${{ github.workspace }}/repo/22.05:/data -e APTSYNC_URL=http://ftp.debian.org/debian -e APTSYNC_UNLINK=1 -e "APTSYNC_DISTS=unstable|main contrib non-free|i386 amd64 arm64 armel armhf mips64el mipsel ppc64el s390x"
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './repo'
+          production-branch: master
+          github-token: ${{ secrets.TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
