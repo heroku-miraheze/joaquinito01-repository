@@ -11,13 +11,23 @@ jobs:
         uses: actions/checkout@v2
       - uses: addnab/docker-run-action@v3
         with:
-          image: ustcmirror/aptsync:latest
-          options: -v ${{ github.workspace }}/repo/22.05:/data -e APTSYNC_URL=http://ftp.debian.org/debian -e APTSYNC_UNLINK=1 -e APTSYNC_DISTS='unstable|main|amd64'
+          image: ustcmirror/rsync:latest
+          options: -v ${{ github.workspace }}/repo/22.05/community:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/community
+          run: "entry.sh"
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: ustcmirror/rsync:latest
+          options: -v ${{ github.workspace }}/repo/22.05/core:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/core
+          run: "entry.sh"
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: ustcmirror/rsync:latest
+          options: -v ${{ github.workspace }}/repo/22.05/extra:/data -e RSYNC_HOST=rsync://mirrors.rit.edu/ -e RSYNC_PATH=archlinux/extra
           run: "entry.sh"
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './repo'
+          publish-dir: './repo/22.05'
           production-branch: master
           github-token: ${{ secrets.TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
