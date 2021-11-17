@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 
-        uses: actions/checkout@v2 # Required to mount the Github Workspace to a volume 
+        uses: actions/checkout@v2
       - uses: addnab/docker-run-action@v3
         with:
-          registry: registry-1.docker.io
           image: ustcmirror/apt-sync
           options: -v ${{ github.workspace }}/repo/22.05:/data -e APTSYNC_URL=http://ftp.debian.org/debian -e APTSYNC_UNLINK=1 -e "APTSYNC_DISTS=unstable|main contrib non-free|i386 amd64 arm64 armel armhf mips64el mipsel ppc64el s390x"
       - name: Deploy to Netlify
